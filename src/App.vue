@@ -1,24 +1,6 @@
+<!--eslint linebreak-style: ["error", "windows"]*/-->
 <template>
-  <!-- Header -->
-  <header id="header" class="bg-gray-700">
-    <nav class="container mx-auto flex justify-start items-center py-5 px-4">
-      <!-- App Name -->
-      <a class="text-white font-bold uppercase text-2xl mr-4" href="#">Music</a>
-
-      <div class="flex flex-grow items-center">
-        <!-- Primary Navigation -->
-        <ul class="flex flex-row mt-1">
-          <!-- Navigation Links -->
-          <li>
-            <a class="px-2 text-white" href="#">Login / Register</a>
-          </li>
-          <li>
-            <a class="px-2 text-white" href="#">Manage</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
+<app-header />
 
   <!-- Introduction -->
   <section class="mb-8 py-20 text-white text-center relative">
@@ -275,16 +257,17 @@
   </div>
 
   <!-- Auth Modal -->
-  <div class="fixed z-10 inset-0 overflow-y-auto hidden" id="modal">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center
-      sm:block sm:p-0">
-      <div class="fixed inset-0 transition-opacity">
-        <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
-      </div>
-      </div>
-      </div>
+<auth-modal />
 </template>
+<script>
+import AppHeader from './components/Header.vue';
+import AuthModal from './components/Auth.vue';
 
-<style>
-
-</style>
+export default {
+  name: 'App',
+  components: {
+    AppHeader,
+    AuthModal,
+  },
+};
+</script>
