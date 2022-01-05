@@ -19,6 +19,7 @@ module.exports = {
     'no-debugger': 'off',
     'linebreak-style': 0, // do not check line breaks
     'vue/no-multiple-template-root': 'off', //vue 3 does not require this rule
+    'vue/no-parsing-error': 'off', //had to take this out because of 2 2
   },
 
   overrides: [
