@@ -7,7 +7,6 @@
       <div class="fixed inset-0 transition-opacity">
         <div class="absolute inset-0 bg-gray-800 opacity-75"></div>
       </div>
-
       <!-- This element is to trick the browser into centering the modal contents. -->
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
@@ -67,6 +66,10 @@
             </button>
           </form>
           <!-- Registration Form -->
+          <div class="text-white text-center font-bold p-5 mb-4"
+          v-if="reg_show_alert" :class="reg_alert_variant" >
+            {{ reg_alert_msg }}
+          </div>
           <vee-form v-show="tab === 'register'" :validation-schema="schema"
           @submit="register" :initial-values="userData">
             <!-- Name -->
@@ -141,7 +144,7 @@
               <label class="inline-block">Accept terms of service</label>
               <ErrorMessage class="text-red-600" name="tos" />
             </div>
-            <button type="submit"
+            <button type="submit" :disabled="reg_in_submission"
               class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition
                 hover:bg-purple-700">
               Submit
@@ -171,11 +174,14 @@ export default {
         country: 'required',
         tos: 'tos',
       },
+      userData: {
+        country: 'Australia',
+      },
+      reg_in_submission: false,
+      reg_show_alert: false,
+      reg_alert_variant: 'bg-blue-500',
+      reg_alert_msg: 'Please wait! Your account is being created.',
     };
-  },
-  userData: {
-    country: 'Australia',
-
   },
   computed: {
     // ...mapState({ modal: 'authModalShow' }),
@@ -184,6 +190,13 @@ export default {
   methods: {
     ...mapMutations(['toggleAuthModal']),
     register(values) {
+      this.reg_show_alert = true;
+      this.reg_in_submission = true;
+      this.reg_alert_variant = 'bg-blue-500';
+      this.reg_alert_msg = 'Please wait! Your account is being created.';
+
+      this.reg_alert_variant = 'bg-green-500';
+      this.reg_alert_msg = 'Success! Your account has been created.';
       console.log(values);
     },
   },
