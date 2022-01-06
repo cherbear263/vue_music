@@ -16,6 +16,7 @@ export default {
 
     defineRule('required', required);
     defineRule('tos', required);
+    defineRule('password', required);
     defineRule('min', min);
     defineRule('max', max);
     defineRule('alpha_spaces', alphaSpaces);
