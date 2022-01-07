@@ -19,11 +19,14 @@ export default createStore({
   },
   actions: {
     async register({ commit }, payload) {
-      await auth.createUserWithEmailAndPassword(
+      const userCred = await auth.createUserWithEmailAndPassword(
         payload.email, payload.password,
       );
 
-      await usersCollection.add({
+      // this will retrieve the userCredentials object from firebase
+      // we can then use the uid from the auth object as the id
+      // in the user doc
+      await usersCollection.doc(userCred.user.uid).set({
         name: payload.name,
         email: payload.email,
         age: payload.age,
@@ -31,6 +34,30 @@ export default createStore({
         genre: payload.genres,
 
       });
+
+      await userCred.user.updateProfile({
+        displayName: payload.name,
+      });
+
+      commit('toggleAuth');
+    },
+    async login({ commit }, payload) {
+      // send request to firebase
+      await auth.signInWithEmailAndPassword(payload.email, payload.password);
+      // if successful commit mutation to log user in state
+      commit('toggleAuth');
+    },
+    init_login({ commit }) {
+      // retrieve authentication status
+      const user = auth.currentUser;
+      // if the user is logged in, save the token to indexed DB local storage
+      if (user) {
+        commit('toggleAuth');
+      }
+    },
+    async signout({ commit }) {
+      await auth.signOut();
+
       commit('toggleAuth');
     },
   },
