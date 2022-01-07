@@ -3,8 +3,8 @@
     v-if="reg_show_alert" :class="reg_alert_variant" >
     {{ reg_alert_msg }}
 </div>
-<vee-form  :validation-schema="schema"
-@submit="register" :initial-values="userData">
+<vee-form  :validation-schema="schema" :initial-values="userData"
+@submit="register">
 <!-- Name -->
 <div class="mb-3">
     <label class="inline-block mb-2">Name</label>
@@ -57,7 +57,7 @@
 <!-- Country -->
 <div class="mb-3">
     <label class="inline-block mb-2">Country</label>
-    <vee-field as="select" name="country"
+    <vee-field as="select" name="country" :initial-values="userData.country"
     class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition
         duration-500 focus:outline-none focus:border-black rounded">
     <option value="Aus">Australia</option>
@@ -69,6 +69,21 @@
     <option value="Antarctica">Antarctica</option>
     </vee-field>
     <ErrorMessage class="text-red-600" name="country" />
+</div>
+<div class="mb-3">
+  <label class="inline-block mb-2">What are your favourite genres of music?</label>
+  <div class="form-group form-check" v-for="genre in genresList" v-bind:key="genre.genre"
+  :value="genre.genre">
+    <vee-field type="checkbox" v-model="userData.genres"
+    name="genres" :value="genre.genre" />
+    <span class="ml-2 text-sm">{{ genre.genre }}</span>
+  </div>
+ <!-- <div class="grid grid-cols-4 gap-4">
+    <label class="flex items-center">
+      <input type="checkbox" value="pop" name="genre" :initial-values="userData"/>
+      <span class="ml-2 text-sm">Pop</span>
+      </label>
+  </div> -->
 </div>
 <!-- TOS -->
 <div class="mb-3 pl-6">
@@ -85,7 +100,7 @@
 </vee-form>
 </template>
 <script>
-import firebase from '@/includes/firebase';
+import { auth, usersCollection } from '@/includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -98,10 +113,22 @@ export default {
         password: 'required|min:7|max:32',
         confirm_password: 'confirmed:@password',
         country: 'required',
+        genres: '',
         tos: 'tos',
       },
+      genresList: [
+        { genre: 'pop' },
+        { genre: 'hip hop' },
+        { genre: 'blues' },
+        { genre: 'punk rock' },
+        { genre: 'country' },
+        { genre: 'Indie rock' },
+        { genre: 'classical' },
+        { genre: 'other' },
+      ],
       userData: {
         country: 'Australia',
+        genres: [],
       },
       reg_in_submission: false,
       reg_show_alert: false,
@@ -120,7 +147,7 @@ export default {
       // Create the user in Firebase database
       let userCred = null;
       try {
-        userCred = await firebase.auth().createUserWithEmailAndPassword(
+        userCred = await auth.createUserWithEmailAndPassword(
           values.email, values.password,
         );
       } catch (error) {
@@ -133,6 +160,22 @@ export default {
         } else {
           this.reg_alert_msg = errorMessage;
         }
+        // this.reg_alert_msg = 'An unexpected error occurred. Please try again later.';
+        return;
+      }
+      try {
+        await usersCollection.add({
+          name: values.name,
+          email: values.email,
+          age: values.age,
+          country: values.country,
+          genre: values.genres,
+        });
+      } catch (error) {
+        this.reg_in_submission = false;
+        this.reg_alert_variant = 'bg-red-500';
+        const errorMessage = error.message;
+        this.reg_alert_msg = errorMessage;
         // this.reg_alert_msg = 'An unexpected error occurred. Please try again later.';
         return;
       }

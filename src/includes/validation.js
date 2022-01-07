@@ -4,7 +4,7 @@ import {
 } from 'vee-validate';
 import {
   required, min, max, alpha_spaces as alphaSpaces, email, confirmed,
-  numeric,
+  numeric, one_of as oneOf,
 } from '@vee-validate/rules';
 
 export default {
@@ -23,6 +23,7 @@ export default {
     defineRule('email', email);
     defineRule('confirmed', confirmed);
     defineRule('numeric', numeric);
+    defineRule('one_of', oneOf);
 
     configure({
       generateMessage: (ctx) => {
@@ -34,6 +35,7 @@ export default {
           email: `The ${ctx.field} must be a valid email.`,
           confirmed: 'The passwords do not match.',
           tos: 'You must accept the Terms of Service.',
+          one_of: 'You must select at least one genre',
         };
 
         const message = messages[ctx.rule.name]
