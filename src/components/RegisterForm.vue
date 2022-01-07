@@ -126,7 +126,14 @@ export default {
       } catch (error) {
         this.reg_in_submission = false;
         this.reg_alert_variant = 'bg-red-500';
-        this.reg_alert_msg = 'An unexpected error occurred. Please try again later.';
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode === 'auth/weak-password') {
+          this.reg_alert_msg = 'The password is too weak.';
+        } else {
+          this.reg_alert_msg = errorMessage;
+        }
+        // this.reg_alert_msg = 'An unexpected error occurred. Please try again later.';
         return;
       }
 
