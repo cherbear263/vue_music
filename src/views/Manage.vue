@@ -50,15 +50,14 @@ export default {
     snapshot.forEach(this.addSong);
   },
   beforeRouteLeave(to, from, next) {
-    if (!this.unsavedFlag) {
-      next();
-    } else {
-      // eslint-disable-next-line no-alert, no-restricted-globals
+    if (this.unsavedFlag) {
+    // eslint-disable-next-line no-alert, no-restricted-globals
       const leave = confirm('You have unsaved changes. Are you sure you want to leave?');
       next(leave);
+    } else {
+      this.$refs.upload.cancelUploads();
+      next();
     }
-    this.$refs.upload.cancelUploads();
-    next();
   },
   methods: {
     updateSong(i, values) {
