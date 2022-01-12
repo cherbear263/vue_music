@@ -49,17 +49,62 @@ export default {
   data() {
     return {
       songs: [],
+      maxPerPage: 25,
+      pendingRequest: false,
     };
   },
   async created() {
-    const snapshots = await songsCollection.get();
+    // stop further requests if a request is already running
+    if (this.pendingRequest) {
+      return;
+    }
+    this.pendingRequestion = true;
+    this.getSongs();
 
-    snapshots.forEach((document) => {
-      this.songs.push({
-        docID: document.id,
-        ...document.data(),
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  // you must remove the event listener if a user navigates to a different page
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      const { scrollTop, offsetHeight } = document.documentElement;
+      const { innerHeight } = window;
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight;
+
+      if (bottomOfWindow) {
+        this.getSongs();
+      }
+    },
+    async getSongs() {
+      let snapshots;
+      // check to see which songs were colloected last. Get the next 3
+      // Or, get the first 25 songs for the initial request
+
+      if (this.songs.length) {
+        const lastDoc = await songsCollection
+          .doc(this.songs[this.songs.length - 1].docID)
+          .get();
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .startAfter(lastDoc)
+          .limit(this.maxPerPage)
+          .get();
+      } else {
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .limit(this.maxPerPage)
+          .get();
+      }
+      snapshots.forEach((document) => {
+        this.songs.push({
+          docID: document.id,
+          ...document.data(),
+        });
       });
-    });
+      this.pendingRequest = false;
+    },
   },
 };
 </script>
