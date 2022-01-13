@@ -109,6 +109,10 @@ export default {
       this.$router.push({ name: 'home' });
       return;
     }
+    const { sort } = this.$route.query; // chceck to see if there is a query parameter
+
+    this.sort = sort === '1' || sort === '2' ? sort : '1';
+
     this.song = docSnapshot.data();
     this.getComments();
   },
@@ -159,6 +163,20 @@ export default {
           ...doc.data(),
         }),
       ]);
+    },
+  },
+  watch: {
+    // track changes to sort method. Add query parameter to url
+    sort(newVal) {
+      // don't change anything if the sort parameter matches the route
+      if (newVal === this.$route.query.sort) {
+        return;
+      }
+      this.$router.push({
+        query: {
+          sort: newVal,
+        },
+      });
     },
   },
 };
