@@ -42,6 +42,12 @@ export default createStore({
 
       return false;
     },
+    songID: (state) => {
+      if (state.sound.playing) {
+        return state.currentSong.uid;
+      }
+      return 'noID';
+    },
   },
   actions: {
     async register({ commit }, payload) {
@@ -93,7 +99,6 @@ export default createStore({
       commit('newSong', payload);
 
       state.sound.play();
-
       state.sound.on('play', () => {
         requestAnimationFrame(() => {
           dispatch('progress');
@@ -120,6 +125,22 @@ export default createStore({
           dispatch('progress');
         });
       }
+    },
+    updateSeek({ state, dispatch }, payload) {
+      if (!state.sound.playing) {
+        return;
+      }
+      const { x, width } = payload.currentTarget.getBoundingClientRect();
+      // Document = 2000, Timeline = 1000, Click = 1000
+      const clickX = payload.clientX - x;
+      const percentage = clickX / width;
+      const seconds = state.sound.duration() * percentage;
+
+      state.sound.seek(seconds);
+
+      state.sound.once('seek', () => {
+        dispatch('progress');
+      });
     },
   },
 });

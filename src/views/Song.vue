@@ -6,11 +6,13 @@
     </div>
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
-      <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
+      <button type="button"
+      class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
         focus:outline-none"
-        @click.prevent="newSong(song)">
-        <i class="fas fa-play"></i>
+        @click.prevent="newSong(song), toggleAudio">
+        <i class="fas" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
       </button>
+
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
         <div class="text-3xl font-bold">{{ song.modified_name }}</div>
@@ -19,7 +21,7 @@
     </div>
   </section>
   <!-- Form -->
-  <section class="container mx-auto mt-6">
+  <section class="container mx-auto mt-6" id="comments">
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
         <!-- Comment Count -->
@@ -72,7 +74,7 @@
 
 <script>
 import { songsCollection, auth, commentsCollection } from '@/includes/firebase';
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Song',
@@ -91,7 +93,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userLoggedIn']),
+    ...mapState(['userLoggedIn', 'currentSong']),
+    ...mapGetters(['playing']),
     sortedComments() {
       // you can't change the data - create a new array with slice
       return this.comments.slice().sort((a, b) => {
@@ -118,7 +121,7 @@ export default {
     this.getComments();
   },
   methods: {
-    ...mapActions(['newSong']),
+    ...mapActions(['newSong', 'toggleAudio']),
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true;
       this.comment_show_alert = true;
