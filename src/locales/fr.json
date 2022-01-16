@@ -2,11 +2,18 @@
   "home": {
     "listen": " Écoutez de la bonne musique !"
   },
+  "manage": {
+    "my_songs": "Mes Chansons"
+  },
   "register": {
-    "TOS": "",
-    "accept": ""
+    "TOS": "Conditions d'Utilisation",
+    "accept": "J'accepte les {0} de Music"
   },
   "song": {
-    "comment_count": "{count} Comments"
+    "comment_count": "Pas de Commentaires |1 Commentaire |{count} Commentaires",
+    "comment_placeholder": "Votre commentaire ici...",
+    "sort1": "Plus Récent",
+    "sort2": "Plus Ancien",
+    "submit": "Envoyez"
   }
 }

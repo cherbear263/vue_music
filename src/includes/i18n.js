@@ -21,12 +21,12 @@ function loadLocaleMessages() {
 }
 
 export default createI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  locale: process.env.VUE_APP_I18N_LOCALE || 'en-AU',
+  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en-AU',
   messages: loadLocaleMessages(),
   numberFormats: { // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
     en: {
-      currency: { style: 'currency', currency: 'AU' }, // see https://vue-i18n-next.intlify.dev/guide/essentials/number.html
+      currency: { style: 'currency', currency: 'AUD' }, // see https://vue-i18n-next.intlify.dev/guide/essentials/number.html
     },
     ja: {
       currency: { style: 'currency', currency: 'JPY' },
