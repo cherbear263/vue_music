@@ -1900,6 +1900,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@vee-validate/i18n@^4.5.7":
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/@vee-validate/i18n/-/i18n-4.5.7.tgz#4d6e0cfdcaad07792adb296502366a923cdac663"
+  integrity sha512-QD7gM57UBkcWZfBSA808yX3i1/yREaueNwBdfZxX2Dl2pywNyy11ZP62iH1vs9FIXvlMvo5YnfFj7EA0DRcHHA==
+
 "@vee-validate/rules@^4.5.7":
   version "4.5.7"
   resolved "https://registry.yarnpkg.com/@vee-validate/rules/-/rules-4.5.7.tgz#951b3f3525fb762de4ede7f67aad21675f32ff18"
