@@ -100,7 +100,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userLoggedIn', 'currentSong']),
+    ...mapState({
+      userLoggedIn: (state) => state.auth.userLoggedIn,
+      currentSong: (state) => state.player.currentSong,
+    }),
     ...mapGetters(['playing']),
     sortedComments() {
       // you can't change the data - create a new array with slice
