@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import auth from '@/store/modules/auth';
+import player from '@/store/modules/player';
 import { cloneDeep } from 'lodash';
 
 // mock firebase
@@ -37,5 +38,14 @@ describe('Vuex Store', () => {
     // log in
     await store.dispatch('login', { email: '', password: '' });
     expect(store.state.auth.userLoggedIn).toBe(true);
+  });
+  test('playing returns true if audio is playing', () => {
+    const state = {
+      sound: {
+        playing: () => true,
+      },
+    };
+    const result = player.getters.playing(state);
+    expect(result).toEqual(true);
   });
 });
