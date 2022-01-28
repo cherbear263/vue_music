@@ -11,14 +11,15 @@
       class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
         focus:outline-none"
         @click.prevent="newSong(song), toggleAudio">
-        <i class="fas" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
+        <i :class="{ ' fas fa-play': !playing, 'fa fa-reply': playing }"></i>
       </button>
 
       <div class="z-50 text-left ml-8">
         <!-- Song Info -->
         <div class="text-3xl font-bold">{{ song.modified_name }}</div>
         <div>{{ song.genre }}</div>
-        <div class="song-price">{{ $n(1, 'currency', 'AUD') }} </div>
+        <div class="song-price">{{ $n(1, 'currency', 'AUD') }}
+          <i class="ml-2 fa-heart" :class="isFavorite() ? 'far' : 'fas'"></i></div>
       </div>
     </div>
   </section>
@@ -80,7 +81,9 @@
 </template>
 
 <script>
-import { songsCollection, auth, commentsCollection } from '@/includes/firebase';
+import {
+  songsCollection, auth, commentsCollection,
+} from '@/includes/firebase';
 import { mapState, mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -143,7 +146,7 @@ export default {
       this.comment_alert_msg = 'Submitting your comment. Please wait.';
 
       const user = auth.currentUser;
-      console.log(user);
+      // console.log(user);
       let comment = '';
       if (user !== null) {
         comment = {

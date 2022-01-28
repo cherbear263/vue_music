@@ -1,12 +1,7 @@
-import { shallowMount } from '@vue/test-utils';
-import HelloWorld from '@/components/HelloWorld.vue';
-
-describe('HelloWorld.vue', () => {
-  it('renders props.msg when passed', () => {
-    const msg = 'new message';
-    const wrapper = shallowMount(HelloWorld, {
-      props: { msg },
-    });
-    expect(wrapper.text()).toMatch(msg);
-  });
+// sanity test
+// run this test in vue cli under test:unit
+test('sanity test', () => {
+  // expect is like assert but in jest - has matchers to validate
+  // e.g. toBe compares primitive values
+  expect(true).toBe(true);
 });
