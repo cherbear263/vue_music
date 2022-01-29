@@ -7,7 +7,7 @@
     </div>
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
-      <button type="button"
+      <button type="button" id="play-button"
       class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
         focus:outline-none"
         @click.prevent="newSong(song), toggleAudio">
@@ -19,7 +19,7 @@
         <div class="text-3xl font-bold">{{ song.modified_name }}</div>
         <div>{{ song.genre }}</div>
         <div class="song-price">{{ $n(1, 'currency', 'AUD') }}
-          <i class="ml-2 fa-heart" :class="isFavorite() ? 'far' : 'fas'"></i></div>
+          <i class="ml-2 fa-heart"></i></div>
       </div>
     </div>
   </section>
